@@ -1,0 +1,123 @@
+generator client {
+provider = "prisma-client"
+output   = "../src/generated/prisma"
+}
+
+datasource db {
+provider = "sqlite"
+}
+
+model Restaurant {
+id        Int      @id @default(autoincrement())
+name      String
+
+menus     Menu[]
+orders    Order[]
+}
+
+model Client {
+id        Int      @id @default(autoincrement())
+name      String
+phone     String?
+
+orders    Order[]
+}
+
+model Menu {
+id            Int      @id @default(autoincrement())
+name          String
+price         Float
+
+restaurantId  Int
+restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+
+orderItems    OrderItem[]
+}
+
+model Order {
+id            Int      @id @default(autoincrement())
+
+createdAt     DateTime @default(now())
+updatedAt     DateTime @updatedAt
+
+status        OrderStatus @default(PENDING)
+
+paymentMode   PaymentMode
+
+total         Float @default(0)
+
+clientId      Int
+client        Client @relation(fields: [clientId], references: [id])
+
+restaurantId  Int
+restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+
+items         OrderItem[]
+
+invoices      Invoice[]
+}
+
+model OrderItem {
+id        Int      @id @default(autoincrement())
+
+quantity  Int      @default(1)
+
+price     Float
+
+orderId   Int
+order     Order @relation(fields: [orderId], references: [id])
+
+menuId    Int
+menu      Menu @relation(fields: [menuId], references: [id])
+}
+
+model Invoice {
+id            Int      @id @default(autoincrement())
+
+amount        Float
+
+status        InvoiceStatus @default(INIT)
+
+paymentMode   PaymentMode
+
+createdAt     DateTime @default(now())
+
+orderId       Int
+order         Order @relation(fields: [orderId], references: [id])
+
+payments      Payment[]
+}
+
+model Payment {
+id          Int      @id @default(autoincrement())
+
+amount      Float
+
+provider    String?
+
+reference   String?
+
+createdAt   DateTime @default(now())
+
+invoiceId   Int
+invoice     Invoice @relation(fields: [invoiceId], references: [id])
+}
+
+enum OrderStatus {
+PENDING
+PROCESSING
+COMPLETED
+CANCELLED
+}
+
+enum InvoiceStatus {
+INIT
+PAID
+FAILED
+CANCELLED
+}
+
+enum PaymentMode {
+CASH
+MOBILE_MONEY
+}
