@@ -3,10 +3,10 @@
     "rootDir": "./src",
     "outDir": "./dist"
   },
+  "include": ["src/**/*.ts"],
   "exclude": [
-    "node_modules",
-    "dist",
-    "jest.config.ts",
-    "prisma.config.ts"
+    "src/tests",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }
