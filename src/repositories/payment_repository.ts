@@ -1,9 +1,9 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 import {
     CreatePaymentDto,
     PaymentDto
-} from "../types/payement";
+} from "../types/payement.js";
 
 export default class PaymentRepository {
 

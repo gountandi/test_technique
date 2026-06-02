@@ -1,8 +1,8 @@
 import PaymentRepository
-    from "../repositories/payment_repository";
+    from "../repositories/payment_repository.js";
 
 import InvoiceRepository
-    from "../repositories/invoice_repository";
+    from "../repositories/invoice_repository.js";
 
 export default class PaymentService {
 

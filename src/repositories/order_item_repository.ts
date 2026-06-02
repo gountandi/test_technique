@@ -1,12 +1,12 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 import {
     CreateOrderItemDto,
     OrderItemDto,
     UpdateOrderItemDto
-} from "../types/order_item";
+} from "../types/order_item.js";
 
-import ResourceNotFoundError from "../types/errors";
+import ResourceNotFoundError from "../types/errors.js";
 
 export default class OrderItemRepository {
 

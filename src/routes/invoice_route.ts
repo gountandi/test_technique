@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import InvoiceController from "../controllers/invoice_controller";
-import { invoiceMiddleware } from "../middlewares/invoice_middleware";
+import InvoiceController from "../controllers/invoice_controller.js";
+import { invoiceMiddleware } from "../middlewares/invoice_middleware.js";
 
 const invoiceRouter = Router();
 

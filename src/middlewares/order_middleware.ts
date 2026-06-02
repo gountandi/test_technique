@@ -9,7 +9,7 @@ import {
     addItemSchema,
     updateItemSchema,
     validateSchema
-} from "../validators/order_validator";
+} from "../validators/order_validator.js";
 
 class OrderMiddleware {
 

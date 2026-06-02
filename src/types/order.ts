@@ -40,6 +40,5 @@ export interface CreateOrderDto {
     clientId: number;
     restaurantId: number;
     paymentMode: PaymentMode;
-
-    items: CreateOrderLineDto[];
+    items?: CreateOrderLineDto[];
 }

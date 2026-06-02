@@ -1,5 +1,5 @@
-import { prisma } from "../lib/prisma";
-import { MenuDto } from "../types/menu";
+import { prisma } from "../lib/prisma.js";
+import { MenuDto } from "../types/menu.js";
 
 export default class MenuRepository {
 

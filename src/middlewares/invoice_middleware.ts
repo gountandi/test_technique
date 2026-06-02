@@ -6,8 +6,8 @@ import {
 
 import {
     createInvoiceSchema,
-} from "../validators/invoice_validator";
-import { validateSchema } from "../validators/order_validator";
+} from "../validators/invoice_validator.js";
+import { validateSchema } from "../validators/order_validator.js";
 
 class InvoiceMiddleware {
 

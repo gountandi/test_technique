@@ -1,12 +1,12 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 import {
     CreateInvoiceDto,
     InvoiceDto,
     UpdateInvoiceDto
-} from "../types/invoice";
+} from "../types/invoice.js";
 
-import ResourceNotFoundError from "../types/errors";
+import ResourceNotFoundError from "../types/errors.js";
 
 export default class InvoiceRepository {
 

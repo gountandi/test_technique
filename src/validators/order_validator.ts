@@ -3,12 +3,12 @@ import Joi from "joi";
 import {
     CreateOrderDto,
   
-} from "../types/order";
+} from "../types/order.js";
 
 import {
     CreateOrderItemDto as AddItemDto,
     UpdateOrderItemDto
-} from "../types/order_item";
+} from "../types/order_item.js";
 export const createOrderSchema =
     Joi.object<CreateOrderDto>({
 

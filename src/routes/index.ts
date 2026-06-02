@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import orderRouter from "./oder_route";
-import invoiceRouter from "./invoice_route";
-import paymentRouter from "./payment_route";
+import orderRouter from "./oder_route.js";
+import invoiceRouter from "./invoice_route.js";
+import paymentRouter from "./payment_route.js";
 
 const router = Router();
 

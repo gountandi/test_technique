@@ -1,12 +1,12 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 import {
     CreateOrderDto,
     OrderDto,
     UpdateOrderDto
-} from "../types/order";
+} from "../types/order.js";
 
-import ResourceNotFoundError from "../types/errors";
+import ResourceNotFoundError from "../types/errors.js";
 
 export default class OrderRepository {
 
@@ -18,7 +18,7 @@ export default class OrderRepository {
             data: {
                 clientId: data.clientId,
                 restaurantId: data.restaurantId,
-                paymentMode: data.paymentMode
+                paymentMode: data.paymentMode,
             } 
         });
 

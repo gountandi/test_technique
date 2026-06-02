@@ -1,5 +1,5 @@
-import { prisma } from "../lib/prisma";
-import { RestaurantDto } from "../types/restaurant";
+import { prisma } from "../lib/prisma.js";
+import { RestaurantDto } from "../types/restaurant.js";
 
 export default class RestaurantRepository {
 

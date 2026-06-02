@@ -5,7 +5,7 @@ import {
 } from "express";
 
 import InvoiceService
-    from "../services/invoice_service";
+    from "../services/invoice_service.js";
 
 export default class InvoiceController {
 

@@ -1,4 +1,4 @@
-import OrderItemRepository from "../repositories/order_item_repository";
+import OrderItemRepository from "../repositories/order_item_repository.js";
 
 export default class OrderItemService {
 

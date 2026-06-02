@@ -1,5 +1,5 @@
 import InvoiceRepository
-    from "../repositories/invoice_repository";
+    from "../repositories/invoice_repository.js";
 
 import {
     PaymentMode

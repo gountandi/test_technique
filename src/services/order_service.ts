@@ -1,11 +1,11 @@
-import OrderRepository from "../repositories/order_repository";
-import OrderItemRepository from "../repositories/order_item_repository";
-import MenuRepository from "../repositories/menu_repository";
-import InvoiceService from "./invoice_service";
+import OrderRepository from "../repositories/order_repository.js";
+import OrderItemRepository from "../repositories/order_item_repository.js";
+import MenuRepository from "../repositories/menu_repository.js";
+import InvoiceService from "./invoice_service.js";
 
-import { CreateOrderDto } from "../types/order";
+import { CreateOrderDto } from "../types/order.js";
 
-import ResourceNotFoundError from "../types/errors";
+import ResourceNotFoundError from "../types/errors.js";
 
 export default class OrderService {
 
@@ -36,7 +36,7 @@ export default class OrderService {
 
         let total = 0;
 
-        for (const item of data.items) {
+        for (const item of (data.items ?? [])) {
 
             const menu =
                 await this.menuRepository.findById(
@@ -73,7 +73,6 @@ export default class OrderService {
         return this.orderRepository
             .findByIdWithDetails(order.id);
     }
-
     public async getOrderById(
         orderId: number
     ) {

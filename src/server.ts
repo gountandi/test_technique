@@ -1,8 +1,8 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import path from "path";
 import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./swagger/swagger";
-import router from './routes';
+import swaggerSpec from "./swagger/swagger.js";
+import router from './routes/index.js';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;

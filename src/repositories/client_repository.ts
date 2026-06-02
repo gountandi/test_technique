@@ -1,5 +1,5 @@
-import { prisma } from "../lib/prisma";
-import { ClientDto } from "../types/client";
+import { prisma } from "../lib/prisma.js";
+import { ClientDto } from "../types/client.js";
 
 export default class ClientRepository {
 

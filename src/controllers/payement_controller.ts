@@ -5,7 +5,7 @@ import {
 } from "express";
 
 import PaymentService
-    from "../services/payment_service";
+    from "../services/payment_service.js";
 
 export default class PaymentController {
 
