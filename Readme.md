@@ -1,15 +1,3 @@
-Oui, je te conseille de le refaire maintenant que l'architecture est stabilisée. Le README que nous avions commencé est bon, mais il ne reflète pas forcément exactement ce que tu as finalement implémenté.
-
-Pour un test technique OrgaAfrica, le README doit être :
-
-* professionnel ;
-* concis ;
-* orienté métier ;
-* fidèle à ton code.
-
-Tu peux pratiquement copier-coller celui-ci.
-
----
 
 # OrgaAfrica - Dynamic Order & Payment Management System
 
