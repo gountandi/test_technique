@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx --watch src/server.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "start": "node dist/server.js",
     "db": "npx prisma migrate dev --name init --config prisma.config.ts",
     "seed": "tsx src/seeders/index.ts",
