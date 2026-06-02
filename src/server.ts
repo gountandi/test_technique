@@ -3,7 +3,7 @@ import path from "path";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swagger/swagger.js";
 import router from './routes/index.js';
-
+import cors from "cors"
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
@@ -31,4 +31,11 @@ app.use(
     "/api-docs",
     swaggerUi.serve,
     swaggerUi.setup(swaggerSpec)
+);
+
+
+app.use(
+  cors({
+    origin: "*"
+  })
 );
