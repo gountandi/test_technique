@@ -1,10 +1,8 @@
-
-
 export default class ResourceNotFoundError extends Error {
-
-    constructor(message: string) {
-        super(message);
-        this.name = "ResourceNotFoundError";
-    }
-
+  status: number;
+  constructor(message: string) {
+    super(message);
+    this.name = "ResourceNotFoundError";
+    this.status = 404;
+  }
 }
