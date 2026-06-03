@@ -29,5 +29,6 @@ paymentMode: PaymentMode;
 }
 
 export interface UpdateInvoiceDto {
-status: InvoiceStatus;
+status?: InvoiceStatus;
+amount?: number;
 }

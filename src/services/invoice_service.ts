@@ -1,102 +1,49 @@
-import InvoiceRepository
-    from "../repositories/invoice_repository.js";
-
-import {
-    PaymentMode
-} from "../types/invoice";
+import InvoiceRepository from "../repositories/invoice_repository.js";
+import { PaymentMode } from "../types/invoice";
 
 export default class InvoiceService {
 
     constructor(
-        private readonly invoiceRepository =
-            new InvoiceRepository()
+        private readonly invoiceRepository = new InvoiceRepository()
     ) {}
 
-    public async createInvoice(
-        orderId: number,
-        amount: number,
-        paymentMode: PaymentMode
-    ) {
-
-        return this.invoiceRepository.create({
-            orderId,
-            amount,
-            paymentMode
-        });
+    public async createInvoice(orderId: number, amount: number, paymentMode: PaymentMode) {
+        return this.invoiceRepository.create({ orderId, amount, paymentMode });
     }
 
-    public async getPaidAmount(
-        orderId: number
-    ): Promise<number> {
-
-        const invoices =
-            await this.invoiceRepository
-                .findByOrderId(
-                    orderId
-                );
-
+    public async getPaidAmount(orderId: number): Promise<number> {
+        const invoices = await this.invoiceRepository.findByOrderId(orderId);
         return invoices
-            .filter(
-                invoice =>
-                    invoice.status ===
-                    "PAID"
-            )
-            .reduce(
-                (
-                    total,
-                    invoice
-                ) =>
-                    total +
-                    invoice.amount,
-                0
-            );
+            .filter(invoice => invoice.status === "PAID")
+            .reduce((total, invoice) => total + invoice.amount, 0);
     }
 
-    public async getRemainingAmount(
-        orderId: number,
-        total: number
-    ) {
-
-        const paid =
-            await this.getPaidAmount(
-                orderId
-            );
-
+    public async getRemainingAmount(orderId: number, total: number) {
+        const paid = await this.getPaidAmount(orderId);
         return total - paid;
     }
 
-    public async createComplementInvoice(
-        orderId: number,
-        total: number,
-        paymentMode: PaymentMode
-    ) {
+    // ✅ Nouvelle méthode : met à jour la facture active (non payée) avec le nouveau total
+    public async updateInvoiceAmount(orderId: number, newAmount: number): Promise<void> {
+        const invoices = await this.invoiceRepository.findByOrderId(orderId);
+        const activeInvoice = invoices.find(inv => inv.status !== "PAID");
 
-        const remaining =
-            await this.getRemainingAmount(
-                orderId,
-                total
-            );
-
-        if (
-            remaining <= 0
-        ) {
-            return null;
+        if (activeInvoice) {
+            await this.invoiceRepository.update(activeInvoice.id, {
+                amount: newAmount,
+                status: "INIT"
+            });
+        } else {
+            // Si aucune facture active (cas extrême, par exemple toutes payées), on crée une nouvelle facture
+            // Mais cela ne devrait pas arriver dans le flux normal
+            await this.invoiceRepository.create({ orderId, amount: newAmount, paymentMode: "MOBILE_MONEY" });
         }
-
-        return this.invoiceRepository.create({
-            orderId,
-            amount: remaining,
-            paymentMode
-        });
     }
 
-    public async markAsPaid(
-        invoiceId: number
-    ) {
+    // createComplementInvoice peut être conservée mais ne sera plus utilisée dans OrderService
+    // public async createComplementInvoice(...) { ... }
 
-        return this.invoiceRepository
-            .markAsPaid(
-                invoiceId
-            );
+    public async markAsPaid(invoiceId: number) {
+        return this.invoiceRepository.markAsPaid(invoiceId);
     }
 }
