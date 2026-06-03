@@ -4,20 +4,22 @@ import InvoiceService from "../services/invoice_service.js";
 export default class InvoiceController {
     constructor(private readonly invoiceService = new InvoiceService()) {}
 
-    // ✅ Mise à jour de la facture après modification de la commande
-    public updateInvoiceAmount = async (
+    public createComplementInvoice = async (
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> => {
         try {
             const orderId = Number(req.params.orderId);
-            const { total } = req.body; // seul le total est nécessaire
+            const { total, paymentMode } = req.body;
 
-            await this.invoiceService.updateInvoiceAmount(orderId, total);
+            const invoice = await this.invoiceService.createComplementInvoice(
+                orderId,
+                total,
+                paymentMode
+            );
 
-            const invoice = await this.invoiceService.getInvoiceByOrderId(orderId);
-            res.status(200).json({ message: "Facture mise à jour", invoice });
+            res.status(201).json(invoice);
         } catch (error) {
             next(error);
         }

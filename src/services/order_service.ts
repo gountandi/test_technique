@@ -6,7 +6,6 @@ import { CreateOrderDto } from "../types/order.js";
 import ResourceNotFoundError from "../types/errors.js";
 
 export default class OrderService {
-
     constructor(
         private readonly orderRepository = new OrderRepository(),
         private readonly orderItemRepository = new OrderItemRepository(),
@@ -25,9 +24,7 @@ export default class OrderService {
         for (const item of (data.items ?? [])) {
             const menu = await this.menuRepository.findById(item.menuId);
             if (!menu) throw new ResourceNotFoundError(`Menu ${item.menuId} introuvable`);
-
             total += menu.price * item.quantity;
-
             await this.orderItemRepository.create({
                 orderId: order.id,
                 menuId: item.menuId,
@@ -36,9 +33,7 @@ export default class OrderService {
         }
 
         await this.orderRepository.updateTotal(order.id, total);
-        // ✅ Création de la facture initiale (une seule)
         await this.invoiceService.createInvoice(order.id, total, order.paymentMode);
-
         return this.orderRepository.findByIdWithDetails(order.id);
     }
 
@@ -60,28 +55,19 @@ export default class OrderService {
                 quantity: existingItem.quantity + quantity
             });
         } else {
-            await this.orderItemRepository.create({
-                orderId,
-                menuId,
-                quantity
-            });
+            await this.orderItemRepository.create({ orderId, menuId, quantity });
         }
 
         const total = await this.recalculateTotal(orderId);
-
-        // ✅ Mise à jour de la facture unique (quel que soit le mode)
+        // ✅ Mise à jour automatique de la facture (pas de nouvelle facture)
         await this.invoiceService.updateInvoiceAmount(orderId, total);
-
         return this.getOrderById(orderId);
     }
 
     public async updateItemQuantity(itemId: number, quantity: number) {
         const item = await this.orderItemRepository.updateQuantity(itemId, { quantity });
-
         const newTotal = await this.recalculateTotal(item.orderId);
-        // ✅ Mise à jour de la facture
         await this.invoiceService.updateInvoiceAmount(item.orderId, newTotal);
-
         return item;
     }
 
@@ -91,15 +77,9 @@ export default class OrderService {
         if (order.status === "COMPLETED") throw new Error("Commande terminée");
 
         await this.orderItemRepository.delete(itemId);
-
         const total = await this.recalculateTotal(orderId);
-        // ✅ Mise à jour de la facture
         await this.invoiceService.updateInvoiceAmount(orderId, total);
-
-        return {
-            message: "Article supprimé avec succès",
-            total
-        };
+        return { message: "Article supprimé avec succès", total };
     }
 
     public async recalculateTotal(orderId: number): Promise<number> {
@@ -112,14 +92,10 @@ export default class OrderService {
     public async completeOrder(orderId: number) {
         const order = await this.orderRepository.findById(orderId);
         if (!order) throw new ResourceNotFoundError(`Commande ${orderId} introuvable`);
-
         if (order.paymentMode === "MOBILE_MONEY") {
             const paid = await this.invoiceService.getPaidAmount(orderId);
-            if (paid < order.total) {
-                throw new Error("Paiement incomplet");
-            }
+            if (paid < order.total) throw new Error("Paiement incomplet");
         }
-
         return this.orderRepository.complete(orderId);
     }
 }
