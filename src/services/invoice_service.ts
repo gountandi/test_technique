@@ -2,6 +2,9 @@ import InvoiceRepository from "../repositories/invoice_repository.js";
 import { PaymentMode } from "../types/invoice";
 
 export default class InvoiceService {
+    createComplementInvoice(orderId: number, total: any, paymentMode: any) {
+        throw new Error("Method not implemented.");
+    }
 
     constructor(
         private readonly invoiceRepository = new InvoiceRepository()
@@ -45,5 +48,11 @@ export default class InvoiceService {
 
     public async markAsPaid(invoiceId: number) {
         return this.invoiceRepository.markAsPaid(invoiceId);
+    }
+
+    // dans InvoiceService
+    public async getInvoiceByOrderId(orderId: number) {
+        const invoices = await this.invoiceRepository.findByOrderId(orderId);
+        return invoices.find(inv => inv.status !== "PAID") || null;
     }
 }
