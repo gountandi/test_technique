@@ -19,12 +19,6 @@ app.use(
   express.static(path.join(__dirname, "storage/public"))
 );
 
-
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
 /* Routes */
 app.use("/api", router);
 app.use(
@@ -39,3 +33,18 @@ app.use(
     origin: "*"
   })
 );
+
+// Middleware d'erreur global (4 paramètres)
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({
+    message: "Internal Server Error",
+    // En développement, afficher la stack
+    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+  });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
+
